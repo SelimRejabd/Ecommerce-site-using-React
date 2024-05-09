@@ -1,7 +1,7 @@
 import React , {useEffect} from "react";
 import { Row, Col } from "react-bootstrap";
 import Product from "../components/Product";
-import { fetchProducts } from "../features/products/ProductSlice";
+import { fetchProducts } from "../features/slice/ProductSlice";
 import { useDispatch, useSelector } from 'react-redux';
 
 
