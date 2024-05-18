@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import CartScreen from "./screens/CartScreen";
 import LoginForm from "./components/LoginForm";
 import Profile from "./components/Profile";
+import Register from "./components/Register";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route path="/cart/:id?" Component={CartScreen}/>
             <Route path="/login" Component={LoginForm}/>
             <Route path="/profile" Component={Profile}/>
+            <Route path="/register" Component={Register}/>
           </Routes>
         </Container>
       </main>
