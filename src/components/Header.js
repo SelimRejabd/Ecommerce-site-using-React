@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navbar, Nav, Container } from 'react-bootstrap';
+import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../features/slice/UserLoginSlice';
@@ -31,9 +31,12 @@ function Header() {
                                 </Nav.Link>
                             </LinkContainer>
                             {user ? (
-                                <Nav.Link onClick={handleLogout}>
-                                    <i className="fas fa-user"></i>Logout
-                                </Nav.Link>
+                                <NavDropdown title={user.username}>
+                                    <LinkContainer to="/profile">
+                                        <NavDropdown.Item>Profile</NavDropdown.Item>
+                                    </LinkContainer>
+                                    <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
+                                </NavDropdown>
                             ) : (
                                 <LinkContainer to="/login">
                                     <Nav.Link>
