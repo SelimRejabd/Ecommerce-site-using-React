@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { registerUser } from '../features/slice/UserRegisterSlice';
-
+import { loginUser } from '../features/slice/UserLoginSlice';
 const Register = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { user, loading, error } = useSelector((state) => state.userRegister);
+    const { user: registeredUser, loading, error } = useSelector((state) => state.userRegister);
+    const { user: loggedInUser } = useSelector((state) => state.user);
+    console.log(registeredUser);
 
     const [formData, setFormData] = useState({
         name: '',
@@ -18,7 +20,6 @@ const Register = () => {
     const [message, setMessage] = useState('');
 
     const { name, email, password, confirmPassword } = formData;
-    console.log(formData);
 
     const handleChange = (e) => {
         setFormData({
@@ -37,10 +38,16 @@ const Register = () => {
     };
 
     useEffect(() => {
-        if (user) {
-            navigate('/profile');
+        if (registeredUser) {
+            dispatch(loginUser({ username: formData.email, password: formData.password }));
         }
-    }, [user, navigate]);
+    }, [registeredUser, dispatch, formData.email, formData.password]);
+
+    useEffect(() => {
+        if (loggedInUser) {
+            navigate('/');
+        }
+    }, [loggedInUser, navigate]);
 
     return (
         <div className="container">
