@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../features/slice/UserLoginSlice";
 import Alert from "react-bootstrap/Alert";
 
@@ -81,7 +81,7 @@ const LoginForm = () => {
             {error && <div className="alert alert-danger mt-3">{renderErrorMessage(error)}</div>}
             <div className="mt-3 text-center">
               <span>Don't have an account? </span>
-              <a href="/register">Register here</a>
+              <Link to="/register">Register here</Link>
             </div>
           </form>
         </div>
