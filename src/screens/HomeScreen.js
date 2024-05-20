@@ -7,10 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 export default function HomeScreen() {
  
-  const {isLoading, products, error} = useSelector((state) => state.products);
-    console.log(isLoading);
-    console.log(products);
-    console.log(error);
+  const {products, error} = useSelector((state) => state.products);
     const dispatch = useDispatch();
     useEffect(()=>{
         dispatch(fetchProducts());

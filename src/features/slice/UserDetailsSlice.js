@@ -1,13 +1,14 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+
 const initialState = {
     user: null,
     loading: false,
     error: null,
 };
 
-export const fetchUserDetails = createAsyncThunk(
-    'users/profile/fetchDetails',
+export const fetchUserProfile = createAsyncThunk(
+    'userProfile/fetchProfile',
     async (_, { getState, rejectWithValue }) => {
         try {
             const { user } = getState().user;
@@ -27,9 +28,9 @@ export const fetchUserDetails = createAsyncThunk(
     }
 );
 
-export const updateUserDetails = createAsyncThunk(
-    'user/updateDetails',
-    async (userData, { getState, rejectWithValue }) => {
+export const updateUserProfile = createAsyncThunk(
+    'userProfile/updateProfile',
+    async (userData, { getState, dispatch, rejectWithValue }) => {
         try {
             const { user } = getState().user;
             const response = await axios.put('users/profile/update/', userData, {
@@ -37,6 +38,7 @@ export const updateUserDetails = createAsyncThunk(
                     Authorization: `Bearer ${user.token}`,
                 },
             });
+
             return response.data;
         } catch (error) {
             if (error.response && error.response.data) {
@@ -48,38 +50,37 @@ export const updateUserDetails = createAsyncThunk(
     }
 );
 
-const userDetailsSlice = createSlice({
-    name: 'userDetails',
+const userProfileSlice = createSlice({
+    name: 'userProfile',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(fetchUserDetails.pending, (state) => {
+            .addCase(fetchUserProfile.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(fetchUserDetails.fulfilled, (state, action) => {
+            .addCase(fetchUserProfile.fulfilled, (state, action) => {
                 state.loading = false;
                 state.user = action.payload;
             })
-            .addCase(fetchUserDetails.rejected, (state, action) => {
+            .addCase(fetchUserProfile.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload || 'Something went wrong';
             })
-            .addCase(updateUserDetails.pending, (state) => {
+            .addCase(updateUserProfile.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(updateUserDetails.fulfilled, (state, action) => {
+            .addCase(updateUserProfile.fulfilled, (state, action) => {
                 state.loading = false;
                 state.user = action.payload;
-                // localStorage.setItem("user", JSON.stringify(state.user));
             })
-            .addCase(updateUserDetails.rejected, (state, action) => {
+            .addCase(updateUserProfile.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload || 'Something went wrong';
             });
     },
 });
 
-export default userDetailsSlice.reducer;
+export default userProfileSlice.reducer;
