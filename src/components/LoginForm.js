@@ -2,13 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../features/slice/UserLoginSlice";
-import Alert from "react-bootstrap/Alert";
 
 const LoginForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user, loading, error } = useSelector((state) => state.user);
-  console.log(error);
 
   const [credentials, setCredentials] = useState({
     username: "",

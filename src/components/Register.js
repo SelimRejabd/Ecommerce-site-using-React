@@ -12,7 +12,6 @@ const Register = () => {
     error,
   } = useSelector((state) => state.userRegister);
   const { user: loggedInUser } = useSelector((state) => state.user);
-  console.log(registeredUser);
 
   const [formData, setFormData] = useState({
     name: "",
