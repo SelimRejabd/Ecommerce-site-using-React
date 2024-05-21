@@ -2,11 +2,13 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { removeItem, updateItemQuantity, clearCart } from "../features/slice/CartSlice";
 import { ListGroup, Row, Col, Image, Button, Form } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 const CartScreen = () => {
   const items = useSelector((state) => state.cart.items);
   const totalPrice = useSelector((state) => state.cart.totalPrice);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleRemoveItem = (itemId) => {
     dispatch(removeItem(itemId));
@@ -18,6 +20,10 @@ const CartScreen = () => {
 
   const handleClearCart = () => {
     dispatch(clearCart());
+  };
+
+  const handleProceedToCheckout = () => {
+    navigate('/shipping');
   };
 
   return (
@@ -63,13 +69,18 @@ const CartScreen = () => {
             ))}
           </ListGroup>
           <Row className="mt-3">
-            <Col md={8}></Col>
             <Col md={4}>
               <h5 className="text-right">Total: ${totalPrice.toFixed(2)}</h5>
             </Col>
           </Row>
           <Row className="mt-3">
-            <Col md={8}></Col>
+            <Col md={4}>
+            <Button variant="primary" onClick={handleProceedToCheckout} className="mt-2">
+                Proceed to Checkout
+              </Button>
+            </Col>
+          </Row>
+          <Row className="mt-3">
             <Col md={4}>
               <Button variant="danger" onClick={handleClearCart}>
                 Clear Cart
