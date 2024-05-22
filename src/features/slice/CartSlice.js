@@ -3,6 +3,9 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   items: JSON.parse(localStorage.getItem("cartItems")) || [],
   totalPrice: JSON.parse(localStorage.getItem("totalPrice")) || 0,
+  shippingAddress: localStorage.getItem('shippingAddress') 
+                      ? JSON.parse(localStorage.getItem('shippingAddress'))
+                      : {},
 };
 
 const cartSlice = createSlice({
@@ -41,19 +44,23 @@ const cartSlice = createSlice({
         itemToUpdate.qty = qty;
         state.totalPrice += itemToUpdate.price * itemToUpdate.qty;
         localStorage.setItem("cartItems", JSON.stringify(state.items));
-        localStorage.setItem("totalPrice", JSON.stringify(state.totalPrice)); // Update total price in local storage
+        localStorage.setItem("totalPrice", JSON.stringify(state.totalPrice)); 
       }
     },
     clearCart(state) {
       state.items = [];
       state.totalPrice = 0;
       localStorage.removeItem("cartItems");
-      localStorage.removeItem("totalPrice"); // Remove total price from local storage
+      localStorage.removeItem("totalPrice"); 
     },
+    saveShippingAddress: (state, action) => {
+      state.shippingAddress = action.payload;
+      localStorage.setItem('shippingAddress', JSON.stringify(action.payload));
+  },
   },
 });
 
-export const { addItem, removeItem, updateItemQuantity, clearCart } =
+export const { addItem, removeItem, updateItemQuantity, clearCart, saveShippingAddress } =
   cartSlice.actions;
 
 export default cartSlice.reducer;
