@@ -3,6 +3,7 @@ import { Form, Button, Col } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { saveShippingAddress } from "../features/slice/CartSlice";
+import CheckoutSteps from "../components/CheckoutSteps";
 
 const ShippingScreen = () => {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ const ShippingScreen = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(saveShippingAddress({ address, city, postalCode, country }));
-    // navigate("/payment");
+    navigate("/payment");
   };
 
   return (
@@ -25,6 +26,7 @@ const ShippingScreen = () => {
       <div className="row justify-content-center">
         <div className="col-md-6">
           <div className="container mt-5">
+            <CheckoutSteps/>
             <h2>Shipping</h2>
             <Form onSubmit={handleSubmit}>
               <Form.Group controlId="address" className="mt-3">
