@@ -10,6 +10,7 @@ import Profile from "./components/Profile";
 import Register from "./components/Register";
 import ShippingScreen from "./screens/ShippingScreen";
 import PaymentScreen from "./screens/PaymentScreen";
+import PlaceOrder from "./screens/PlaceOrder";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
             <Route path="/register" Component={Register}/>
             <Route path="/shipping" Component={ShippingScreen}/>
             <Route path="/payment" Component={PaymentScreen}/>
+            <Route path="/placeorder" Component={PlaceOrder}/>
           </Routes>
         </Container>
       </main>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Button, Col } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { saveShippingAddress } from "../features/slice/CartSlice";
@@ -26,7 +26,7 @@ const ShippingScreen = () => {
       <div className="row justify-content-center">
         <div className="col-md-6">
           <div className="container mt-5">
-            <CheckoutSteps/>
+            <CheckoutSteps step1 step2 step3/>
             <h2>Shipping</h2>
             <Form onSubmit={handleSubmit}>
               <Form.Group controlId="address" className="mt-3">
