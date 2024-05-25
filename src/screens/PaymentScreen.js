@@ -9,7 +9,7 @@ const Payment = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { shippingAddress } = useSelector((state) => state.cart);
-  const [paymentMethod, setPaymentMethod] = useState("Bkash");
+  const [paymentMethod, setPaymentMethod] = useState("Rocket");
 
   if (!shippingAddress.address) {
     navigate("/shipping");
@@ -36,21 +36,21 @@ const Payment = () => {
               <Col>
                 <Form.Check
                   type="radio"
-                  label="Bkash"
-                  id="Bkash"
-                  name="paymentMethod"
-                  value="Bkash"
-                  checked={paymentMethod === "Bkash"}
-                  onChange={(e) => setPaymentMethod(e.target.value)}
-                  className="mt-3"
-                />
-                <Form.Check
-                  type="radio"
                   label="Rocket"
                   id="Rocket"
                   name="paymentMethod"
                   value="Rocket"
                   checked={paymentMethod === "Rocket"}
+                  onChange={(e) => setPaymentMethod(e.target.value)}
+                  className="mt-3"
+                />
+                <Form.Check
+                  type="radio"
+                  label="Bkash"
+                  id="Bkash"
+                  name="paymentMethod"
+                  value="Bkash"
+                  checked={paymentMethod === "Bkash"}
                   onChange={(e) => setPaymentMethod(e.target.value)}
                   className="mt-3"
                 />

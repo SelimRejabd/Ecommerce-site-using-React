@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector} from 'react-redux';
 import { ListGroup, Row, Col, Image, Card, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { saveOrder } from '../features/slice/OrderSlice';
+import { saveOrder, resetOrder } from '../features/slice/OrderSlice';
+import { clearCart } from '../features/slice/CartSlice';
 
 const PlaceOrder = () => {
   const navigate = useNavigate();
@@ -26,16 +27,16 @@ const PlaceOrder = () => {
       taxPrice: taxPrice,
       totalPrice: price,
     };
-    console.log(orderData); 
     dispatch(saveOrder(orderData));
-      // .unwrap()
-      // .then(() => {
-      //   navigate(`/order/${order._id}`);
-      // })
-      // .catch((error) => {
-      //   console.error('Order placement failed:', error);
-      // });
   };
+
+  useEffect(() => {
+    if(order) {
+      navigate(`order/${order._id}`);
+      dispatch(clearCart());
+      dispatch(resetOrder());
+    }
+  }, [order, dispatch, navigate]);
 
   return (
     <div className="container mt-5">
