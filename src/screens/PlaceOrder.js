@@ -1,19 +1,40 @@
 import React from 'react';
-import { useSelector} from 'react-redux';
+import { useDispatch, useSelector} from 'react-redux';
 import { ListGroup, Row, Col, Image, Card, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { saveOrder } from '../features/slice/OrderSlice';
 
 const PlaceOrder = () => {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
   const { shippingAddress, paymentMethod, items, totalPrice } = cart;
   const itemTotalPrice = totalPrice.toFixed(2);
   const taxPrice = (0.01 * itemTotalPrice).toFixed(2);
   const shippingPrice = itemTotalPrice > 100 ? 20 : 10;
+  const price = (Number(shippingPrice) + Number(taxPrice) + Number(itemTotalPrice)).toFixed(2);
+
+  const order = useSelector((state) => state.order.order);
 
   const placeOrderHandler = () => {
-    navigate('/order-confirmation');
+    const orderData = {
+      orderItems: items,
+      shippingAddress: shippingAddress,
+      paymentMethod: paymentMethod,
+      itemsPrice: itemTotalPrice,
+      shippingPrice: shippingPrice,
+      taxPrice: taxPrice,
+      totalPrice: price,
+    };
+    console.log(orderData); 
+    dispatch(saveOrder(orderData));
+      // .unwrap()
+      // .then(() => {
+      //   navigate(`/order/${order._id}`);
+      // })
+      // .catch((error) => {
+      //   console.error('Order placement failed:', error);
+      // });
   };
 
   return (
@@ -92,7 +113,7 @@ const PlaceOrder = () => {
               <ListGroup.Item>
                 <Row>
                   <Col>Total</Col>
-                  <Col>${(Number(shippingPrice) + Number(taxPrice) + Number(itemTotalPrice)).toFixed(2)}</Col>
+                  <Col>${price}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
