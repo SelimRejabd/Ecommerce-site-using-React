@@ -1,19 +1,22 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector} from 'react-redux';
-import { ListGroup, Row, Col, Image, Card, Button } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
-import { saveOrder, resetOrder } from '../features/slice/OrderSlice';
-import { clearCart } from '../features/slice/CartSlice';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { ListGroup, Row, Col, Image, Card, Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import { saveOrder, resetOrder } from "../features/slice/OrderSlice";
+import { clearCart } from "../features/slice/CartSlice";
 
 const PlaceOrder = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
   const { shippingAddress, paymentMethod, items, totalPrice } = cart;
-  const itemTotalPrice = totalPrice.toFixed(2);
+
+  const itemTotalPrice = Number(totalPrice.toFixed(2));
+  const shippingPrice = itemTotalPrice < 100 ? 10 : 20;
   const taxPrice = (0.01 * itemTotalPrice).toFixed(2);
-  const shippingPrice = itemTotalPrice > 100 ? 20 : 10;
-  const price = (Number(shippingPrice) + Number(taxPrice) + Number(itemTotalPrice)).toFixed(2);
+
+  let price = (Number(shippingPrice) + Number(taxPrice) + Number(itemTotalPrice));
+  price = parseFloat(price.toFixed(2));
 
   const order = useSelector((state) => state.order.order);
 
@@ -31,7 +34,7 @@ const PlaceOrder = () => {
   };
 
   useEffect(() => {
-    if(order) {
+    if (order) {
       navigate(`order/${order._id}`);
       dispatch(clearCart());
       dispatch(resetOrder());
@@ -47,9 +50,8 @@ const PlaceOrder = () => {
               <h2>Shipping</h2>
               <p>
                 <strong>Address: </strong>
-                {shippingAddress.address}, {shippingAddress.city}{' '}
-                {shippingAddress.postalCode},{' '}
-                {shippingAddress.country}
+                {shippingAddress.address}, {shippingAddress.city}{" "}
+                {shippingAddress.postalCode}, {shippingAddress.country}
               </p>
             </ListGroup.Item>
 
@@ -71,13 +73,17 @@ const PlaceOrder = () => {
                     <ListGroup.Item key={index}>
                       <Row>
                         <Col md={2}>
-                          <Image src={item.image} alt={item.name} fluid rounded />
+                          <Image
+                            src={item.image}
+                            alt={item.name}
+                            fluid
+                            rounded
+                          />
                         </Col>
-                        <Col md={6}>
-                          {item.name}
-                        </Col>
+                        <Col md={6}>{item.name}</Col>
                         <Col md={4}>
-                          {item.qty} x ${item.price} = ${(item.qty * item.price).toFixed(2)}
+                          {item.qty} x ${item.price} = $
+                          {(item.qty * item.price).toFixed(2)}
                         </Col>
                       </Row>
                     </ListGroup.Item>
