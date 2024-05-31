@@ -5,6 +5,7 @@ const initialState = {
   order: null,
   loading: false,
   error: null,
+  orderData: null,
 };
 
 export const saveOrder = createAsyncThunk(
@@ -13,6 +14,27 @@ export const saveOrder = createAsyncThunk(
     try {
       const { user } = getState().user;
       const response = await axios.post("orders/add/", orderData, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  }
+);
+
+export const getOrderById = createAsyncThunk(
+  "order/getOrderById",
+  async (orderId, { getState, rejectWithValue }) => {
+    try {
+      const { user } = getState().user;
+      const response = await axios.get(`/orders/${orderId}/`, {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
@@ -49,6 +71,18 @@ const orderSlice = createSlice({
         state.order = action.payload;
       })
       .addCase(saveOrder.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Something went wrong";
+      })
+      .addCase(getOrderById.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getOrderById.fulfilled, (state, action) => {
+        state.loading = false;
+        state.orderData = action.payload;
+      })
+      .addCase(getOrderById.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Something went wrong";
       });

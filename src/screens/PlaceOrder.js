@@ -4,6 +4,7 @@ import { ListGroup, Row, Col, Image, Card, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { saveOrder, resetOrder } from "../features/slice/OrderSlice";
 import { clearCart } from "../features/slice/CartSlice";
+import CheckoutSteps from "../components/CheckoutSteps";
 
 const PlaceOrder = () => {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ const PlaceOrder = () => {
   const shippingPrice = itemTotalPrice < 100 ? 10 : 20;
   const taxPrice = (0.01 * itemTotalPrice).toFixed(2);
 
-  let price = (Number(shippingPrice) + Number(taxPrice) + Number(itemTotalPrice));
+  let price = Number(shippingPrice) + Number(taxPrice) + Number(itemTotalPrice);
   price = parseFloat(price.toFixed(2));
 
   const order = useSelector((state) => state.order.order);
@@ -35,14 +36,16 @@ const PlaceOrder = () => {
 
   useEffect(() => {
     if (order) {
-      navigate(`order/${order._id}`);
+      navigate(`/order/${order._id}`);
       dispatch(clearCart());
       dispatch(resetOrder());
     }
   }, [order, dispatch, navigate]);
 
   return (
+    <div>
     <div className="container mt-5">
+    <CheckoutSteps step1 step2 step3 step4 />
       <Row>
         <Col md={8}>
           <ListGroup variant="flush">
@@ -137,6 +140,7 @@ const PlaceOrder = () => {
           </Card>
         </Col>
       </Row>
+    </div>
     </div>
   );
 };
